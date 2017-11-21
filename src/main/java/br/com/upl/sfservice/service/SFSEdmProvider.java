@@ -26,11 +26,11 @@ public class SFSEdmProvider extends CsdlAbstractEdmProvider {
 	  public static final FullQualifiedName CONTAINER = new FullQualifiedName(NAMESPACE, CONTAINER_NAME);
 
 	  // Entity Types Names
-	  public static final String ET_PRODUCT_NAME = "Product";
-	  public static final FullQualifiedName ET_PRODUCT_FQN = new FullQualifiedName(NAMESPACE, ET_PRODUCT_NAME);
+	  public static final String ET_ESTOQUE_NAME = "Estoque";
+	  public static final FullQualifiedName ET_ESTOQUE_FQN = new FullQualifiedName(NAMESPACE, ET_ESTOQUE_NAME);
 
 	  // Entity Set Names
-	  public static final String ES_PRODUCTS_NAME = "Products";
+	  public static final String ES_ESTOQUES_NAME = "Estoques";
 	  
 	  @Override
 	  public List<CsdlSchema> getSchemas() {
@@ -41,7 +41,7 @@ public class SFSEdmProvider extends CsdlAbstractEdmProvider {
 
 	    // add EntityTypes
 	    List<CsdlEntityType> entityTypes = new ArrayList<CsdlEntityType>();
-	    entityTypes.add(getEntityType(ET_PRODUCT_FQN));
+	    entityTypes.add(getEntityType(ET_ESTOQUE_FQN));
 	    schema.setEntityTypes(entityTypes);
 
 	    // add EntityContainer
@@ -59,12 +59,12 @@ public class SFSEdmProvider extends CsdlAbstractEdmProvider {
 	  public CsdlEntityType getEntityType(FullQualifiedName entityTypeName) {
 
 	    // this method is called for one of the EntityTypes that are configured in the Schema
-	    if(entityTypeName.equals(ET_PRODUCT_FQN)){
+	    if(entityTypeName.equals(ET_ESTOQUE_FQN)){
 
 	      //create EntityType properties
-	      CsdlProperty id = new CsdlProperty().setName("ID").setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
-	      CsdlProperty name = new CsdlProperty().setName("Name").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	      CsdlProperty  description = new CsdlProperty().setName("Description").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	      CsdlProperty id = 			new CsdlProperty().setName("ID").setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+	      CsdlProperty name = 			new CsdlProperty().setName("Name").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	      CsdlProperty description = 	new CsdlProperty().setName("Description").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 
 	      // create CsdlPropertyRef for Key element
 	      CsdlPropertyRef propertyRef = new CsdlPropertyRef();
@@ -72,7 +72,7 @@ public class SFSEdmProvider extends CsdlAbstractEdmProvider {
 
 	      // configure EntityType
 	      CsdlEntityType entityType = new CsdlEntityType();
-	      entityType.setName(ET_PRODUCT_NAME);
+	      entityType.setName(ET_ESTOQUE_NAME);
 	      entityType.setProperties(Arrays.asList(id, name , description));
 	      entityType.setKey(Collections.singletonList(propertyRef));
 
@@ -86,10 +86,10 @@ public class SFSEdmProvider extends CsdlAbstractEdmProvider {
 	  public CsdlEntitySet getEntitySet(FullQualifiedName entityContainer, String entitySetName) {
 
 	    if(entityContainer.equals(CONTAINER)){
-	      if(entitySetName.equals(ES_PRODUCTS_NAME)){
+	      if(entitySetName.equals(ES_ESTOQUES_NAME)){
 	        CsdlEntitySet entitySet = new CsdlEntitySet();
-	        entitySet.setName(ES_PRODUCTS_NAME);
-	        entitySet.setType(ET_PRODUCT_FQN);
+	        entitySet.setName(ES_ESTOQUES_NAME);
+	        entitySet.setType(ET_ESTOQUE_FQN);
 
 	        return entitySet;
 	      }
@@ -103,7 +103,7 @@ public class SFSEdmProvider extends CsdlAbstractEdmProvider {
 
 	    // create EntitySets
 	    List<CsdlEntitySet> entitySets = new ArrayList<CsdlEntitySet>();
-	    entitySets.add(getEntitySet(CONTAINER, ES_PRODUCTS_NAME));
+	    entitySets.add(getEntitySet(CONTAINER, ES_ESTOQUES_NAME));
 
 	    // create EntityContainer
 	    CsdlEntityContainer entityContainer = new CsdlEntityContainer();

@@ -2,6 +2,8 @@ package br.com.upl.sfservice.service;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.olingo.commons.api.data.ContextURL;
@@ -30,23 +32,27 @@ import org.apache.olingo.server.api.uri.UriInfo;
 import org.apache.olingo.server.api.uri.UriResource;
 import org.apache.olingo.server.api.uri.UriResourceEntitySet;
 
+import br.com.upl.sfservice.dao.DaoFactory;
+import br.com.upl.sfservice.dao.EstoqueDao;
+import br.com.upl.sfservice.data.Storage;
+import br.com.upl.sfservice.model.Estoque;
+
 
 public class SFSEntityCollectionProcessor implements EntityCollectionProcessor {
 
-	private OData odata;
-	  private ServiceMetadata serviceMetadata;
+	  	private OData odata;
+	  	private ServiceMetadata serviceMetadata;
+		private Storage storage;
 
-	  // our processor is initialized with the OData context object
+	  public SFSEntityCollectionProcessor(Storage storage) {
+		      this.storage = storage;
+		  } 
+			
 	  public void init(OData odata, ServiceMetadata serviceMetadata) {
 	    this.odata = odata;
 	    this.serviceMetadata = serviceMetadata;
 	  }
 
-
-	  // the only method that is declared in the EntityCollectionProcessor interface
-	  // this method is called, when the user fires a request to an EntitySet
-	  // in our example, the URL would be:
-	  // http://localhost:8080/ExampleService1/ExampleServlet1.svc/Products
 	  public void readEntityCollection(ODataRequest request, ODataResponse response, UriInfo uriInfo, ContentType responseFormat) throws ODataApplicationException, SerializerException {
 
 	    // 1st we have retrieve the requested EntitySet from the uriInfo object (representation of the parsed service URI)
@@ -55,7 +61,7 @@ public class SFSEntityCollectionProcessor implements EntityCollectionProcessor {
 	    EdmEntitySet edmEntitySet = uriResourceEntitySet.getEntitySet();
 
 	    // 2nd: fetch the data from backend for this requested EntitySetName // it has to be delivered as EntitySet object
-	    EntityCollection entitySet = getData(edmEntitySet);
+	    EntityCollection entitySet = storage.readEntitySetData(edmEntitySet);
 
 	    // 3rd: create a serializer based on the requested format (json)
 	    ODataSerializer serializer = odata.createSerializer(responseFormat);
@@ -75,48 +81,7 @@ public class SFSEntityCollectionProcessor implements EntityCollectionProcessor {
 	    response.setHeader(HttpHeader.CONTENT_TYPE, responseFormat.toContentTypeString());
 	  }
 
-
-	  /**
-	   * Helper method for providing some sample data
-	   * @param edmEntitySet for which the data is requested
-	   * @return data of requested entity set
-	   */
-	  private EntityCollection getData(EdmEntitySet edmEntitySet){
-
-	    EntityCollection productsCollection = new EntityCollection();
-	    // check for which EdmEntitySet the data is requested
-	    if(SFSEdmProvider.ES_PRODUCTS_NAME.equals(edmEntitySet.getName())) {
-	      List<Entity> productList = productsCollection.getEntities();
-
-	      // add some sample product entities
-	      final Entity e1 = new Entity()
-	          .addProperty(new Property(null, "ID", ValueType.PRIMITIVE, 1))
-	          .addProperty(new Property(null, "Name", ValueType.PRIMITIVE, "Notebook Basic 15"))
-	          .addProperty(new Property(null, "Description", ValueType.PRIMITIVE,
-	              "Notebook Basic, 1.7GHz - 15 XGA - 1024MB DDR2 SDRAM - 40GB"));
-	      e1.setId(createId("Products", 1));
-	      productList.add(e1);
-
-	      final Entity e2 = new Entity()
-	          .addProperty(new Property(null, "ID", ValueType.PRIMITIVE, 2))
-	          .addProperty(new Property(null, "Name", ValueType.PRIMITIVE, "1UMTS PDA"))
-	          .addProperty(new Property(null, "Description", ValueType.PRIMITIVE,
-	              "Ultrafast 3G UMTS/HSDPA Pocket PC, supports GSM network"));
-	      e2.setId(createId("Products", 1));
-	      productList.add(e2);
-
-	      final Entity e3 = new Entity()
-	          .addProperty(new Property(null, "ID", ValueType.PRIMITIVE, 3))
-	          .addProperty(new Property(null, "Name", ValueType.PRIMITIVE, "Ergo Screen"))
-	          .addProperty(new Property(null, "Description", ValueType.PRIMITIVE,
-	              "19 Optimum Resolution 1024 x 768 @ 85Hz, resolution 1280 x 960"));
-	      e3.setId(createId("Products", 1));
-	      productList.add(e3);
-	    }
-
-	    return productsCollection;
-	  }
-
+	  
 	  private URI createId(String entitySetName, Object id) {
 	    try {
 	      return new URI(entitySetName + "(" + String.valueOf(id) + ")");
