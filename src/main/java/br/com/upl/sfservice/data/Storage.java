@@ -127,8 +127,18 @@ public class Storage {
          for(Estoque estoque : estoques) {
 	         final Entity e1 = new Entity()
 	                               .addProperty(new Property(null, "ID", ValueType.PRIMITIVE, cont++))
-	                               .addProperty(new Property(null, "Name", ValueType.PRIMITIVE, estoque.getMaterial()))
-	                               .addProperty(new Property(null, "Description", ValueType.PRIMITIVE,estoque.getMaterialDes()));
+	                               .addProperty(new Property(null, "Material", ValueType.PRIMITIVE, estoque.getMaterial()))
+	                               .addProperty(new Property(null, "MaterialDES", ValueType.PRIMITIVE,estoque.getMaterialDes()))
+	                               .addProperty(new Property(null, "Unidade", ValueType.PRIMITIVE,estoque.getUnidade()))
+	                               .addProperty(new Property(null, "Filial", ValueType.PRIMITIVE,estoque.getFilial()))
+	                               .addProperty(new Property(null, "TipoMaterial", ValueType.PRIMITIVE,estoque.getTipoMaterial()))
+	                               .addProperty(new Property(null, "Deposito", ValueType.PRIMITIVE,estoque.getDeposito()))
+	                               .addProperty(new Property(null, "Lote", ValueType.PRIMITIVE,estoque.getLote()))
+	                               .addProperty(new Property(null, "Estoque_Disponivel", ValueType.PRIMITIVE,estoque.getEstoqueDisponivel()))
+	                               .addProperty(new Property(null, "Estoque_Qualidade", ValueType.PRIMITIVE,estoque.getEstoqueQualidade()))
+	                               .addProperty(new Property(null, "Estoque_Transito", ValueType.PRIMITIVE,estoque.getEstoqueTransito()))
+	                               .addProperty(new Property(null, "Estoque_Bloqueado", ValueType.PRIMITIVE,estoque.getEstoqueBloqueado()))
+	                               .addProperty(new Property(null, "BASE", ValueType.PRIMITIVE,estoque.getBase()));
 	        e1.setId(createId("Products", 1));
 	        productList.add(e1);
          }

@@ -62,10 +62,20 @@ public class SFSEdmProvider extends CsdlAbstractEdmProvider {
 	    if(entityTypeName.equals(ET_ESTOQUE_FQN)){
 
 	      //create EntityType properties
-	      CsdlProperty id = 			new CsdlProperty().setName("ID").setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
-	      CsdlProperty name = 			new CsdlProperty().setName("Name").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	      CsdlProperty description = 	new CsdlProperty().setName("Description").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-
+	      CsdlProperty id = 				new CsdlProperty().setName("ID").setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+	      CsdlProperty material = 			new CsdlProperty().setName("Material").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	      CsdlProperty materialDes = 		new CsdlProperty().setName("MaterialDES").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	      CsdlProperty unidade = 			new CsdlProperty().setName("Unidade").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	      CsdlProperty filial = 			new CsdlProperty().setName("Filial").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	      CsdlProperty tipoMaterial = 		new CsdlProperty().setName("TipoMaterial").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	      CsdlProperty deposito = 			new CsdlProperty().setName("Deposito").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	      CsdlProperty lote = 				new CsdlProperty().setName("Lote").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	      CsdlProperty estoqueDisponivel = 	new CsdlProperty().setName("Estoque_Disponivel").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	      CsdlProperty estoqueQualidade = 	new CsdlProperty().setName("Estoque_Qualidade").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	      CsdlProperty estoqueTransito = 	new CsdlProperty().setName("Estoque_Transito").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	      CsdlProperty estoqueBloqueado = 	new CsdlProperty().setName("Estoque_Bloqueado").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	      CsdlProperty base = 				new CsdlProperty().setName("BASE").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	      
 	      // create CsdlPropertyRef for Key element
 	      CsdlPropertyRef propertyRef = new CsdlPropertyRef();
 	      propertyRef.setName("ID");
@@ -73,7 +83,20 @@ public class SFSEdmProvider extends CsdlAbstractEdmProvider {
 	      // configure EntityType
 	      CsdlEntityType entityType = new CsdlEntityType();
 	      entityType.setName(ET_ESTOQUE_NAME);
-	      entityType.setProperties(Arrays.asList(id, name , description));
+	      entityType.setProperties(Arrays.asList(	id, 
+	    		  									material , 
+	    		  									materialDes,
+	    		  									unidade,
+	    		  									filial,
+	    		  									tipoMaterial,
+	    		  									deposito,
+	    		  									lote,
+	    		  									estoqueDisponivel,
+	    		  									estoqueQualidade,
+	    		  									estoqueTransito,
+	    		  									estoqueBloqueado,
+	    		  									base));
+	      
 	      entityType.setKey(Collections.singletonList(propertyRef));
 
 	      return entityType;
